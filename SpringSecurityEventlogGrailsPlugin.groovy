@@ -23,7 +23,8 @@ class SpringSecurityEventlogGrailsPlugin {
     def documentation = "https://github.com/ataylor284/spring-security-eventlog"
 
     def doWithSpring = {
-        springSecurityEventLogger(SpringSecurityEventLogger)
+        def eventLoggerClass = ConfigurationHolder.config.grails.plugins.springsecurity.eventlog.eventLogger ?: SpringSecurityEventLogger
+        springSecurityEventLogger(eventLoggerClass)
 
         // normally these two beans are instantiated only if
         // 'useSecurityEventListener' is true, but they're needed so

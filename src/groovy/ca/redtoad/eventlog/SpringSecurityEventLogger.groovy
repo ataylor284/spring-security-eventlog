@@ -11,12 +11,16 @@ class SpringSecurityEventLogger implements ApplicationListener<AbstractAuthentic
  
     private static final log = LogFactory.getLog(this)
 
-    void onApplicationEvent(AbstractAuthenticationEvent event) {
-        event.authentication.with {
-            def username = principal.hasProperty('username')?.getProperty(principal) ?: principal
+    void logAuthenticationEvent(String eventName, Authentication authentication) {
+        authentication.with {
             try {
+                def username = principal.hasProperty('username')?.getProperty(principal) ?: principal
                 SpringSecurityEvent.withTransaction {
-                    new SpringSecurityEvent(username: username, eventName: event.class.simpleName, sessionId: details?.sessionId, remoteAddress: details?.remoteAddress).save(failOnError:true)
+                    def event = new SpringSecurityEvent(username: username,
+                                                        eventName: eventName,
+                                                        sessionId: details?.sessionId,
+                                                        remoteAddress: details?.remoteAddress)
+                    event.save(failOnError:true)
                 }
             } catch (RuntimeException e) {
                 log.error("error saving spring security event", e)
@@ -25,17 +29,11 @@ class SpringSecurityEventLogger implements ApplicationListener<AbstractAuthentic
         }
     }
 
+    void onApplicationEvent(AbstractAuthenticationEvent event) {
+        logAuthenticationEvent(event.class.simpleName, event.authentication)
+    }
+
     void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        authentication.with {
-            def username = principal.hasProperty('username')?.getProperty(principal) ?: principal
-            try {
-                SpringSecurityEvent.withTransaction {
-                    new SpringSecurityEvent(username: username, eventName: 'Logout', sessionId: details?.sessionId, remoteAddress: details?.remoteAddress).save(failOnError:true)
-                }
-            } catch (RuntimeException e) {
-                log.error("error saving spring security event", e)
-                throw e
-            }
-        }
+        logAuthenticationEvent('Logout', authentication)
     }
 }

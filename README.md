@@ -1,0 +1,49 @@
+Spring Security Eventlog Plugin
+===============================
+
+
+This plugin creates a simple log of spring security events.  Each time
+a user logs in or logs out, a log entry will created, storing the
+remote address, session id, user name, event name, and the time at
+which the event occured.
+
+Events are logged to a table named SPRING_SECURITY_EVENT, mapped to a
+domain object ca.redtoad.eventlog.SpringSecurityEvent.
+
+Each event has the following fields:
+
+* username - the username entered
+* sessionId - the user's session
+* eventName - the name of the event
+* remoteAddress - the user's IP address
+* dateCreated - the event's timestamp
+
+Some of the event names that are captured:
+
+* AuthenticationFailureBadCredentialsEvent - a bad username or password
+* AuthenticationSuccessEvent - a successful login
+* InteractiveAuthenticationSuccessEvent - a successful login where the user entered his/her username and password
+* Logout - a user logged out interactively
+
+
+Customizing
+-----------
+
+You can specify your own logger if you would like to override how
+events get logged.  Create a subclass of SpringSecurityEventLogger and
+add your custom behavior to logAuthenticationEvent.  For example:
+
+    package mypackage
+    
+    import ca.redtoad.eventlog.SpringSecurityEventLogger
+    import org.springframework.security.core.Authentication
+    
+    class CustomEventLogger extends SpringSecurityEventLogger {
+        void logAuthenticationEvent(String eventName, Authentication authentication) {
+            println "$eventName! $authentication"
+        }
+    }
+
+In your `Config.groovy`, tell grails to your own event logger class:
+
+    grails.plugins.springsecurity.eventlog.eventLogger = mypackage.CustomEventLogger
