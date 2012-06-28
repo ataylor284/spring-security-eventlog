@@ -39,11 +39,21 @@ add your custom behavior to logAuthenticationEvent.  For example:
     import org.springframework.security.core.Authentication
     
     class CustomEventLogger extends SpringSecurityEventLogger {
-        void logAuthenticationEvent(String eventName, Authentication authentication) {
-            println "$eventName! $authentication"
+        void logAuthenticationEvent(String eventName, Authentication authentication, String remoteAddress) {
+            println "$eventName! $authentication from $remoteAddress"
         }
     }
 
 In your `Config.groovy`, tell grails to your own event logger class:
 
     grails.plugins.springsecurity.eventlog.eventLogger = mypackage.CustomEventLogger
+
+
+Changelog
+---------
+
+* Changes in spring-security-eventlog 0.2
+
+** fix exception on anonymous logout
+** changed logAuthenticationEvent signature to take remoteAddress
+   directly rather than pulling it out of authentication.details

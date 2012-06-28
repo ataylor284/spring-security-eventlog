@@ -6,7 +6,7 @@ import ca.redtoad.eventlog.SpringSecurityEventLogger
 
 class SpringSecurityEventlogGrailsPlugin {
 
-    def version = "0.1"
+    def version = "0.2"
     def grailsVersion = "1.3 > *"
     def dependsOn = [springSecurityCore: '1.0 > *']
     def pluginExcludes = [
@@ -21,6 +21,9 @@ class SpringSecurityEventlogGrailsPlugin {
     '''.stripMargin()
 
     def documentation = "https://github.com/ataylor284/spring-security-eventlog"
+
+    def license = "APACHE"
+    def scm = [ url: "http://github.com/ataylor284/spring-security-eventlog" ]
 
     def doWithSpring = {
         def eventLoggerClass = ConfigurationHolder.config.grails.plugins.springsecurity.eventlog.eventLogger ?: SpringSecurityEventLogger

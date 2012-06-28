@@ -11,29 +11,27 @@ class SpringSecurityEventLogger implements ApplicationListener<AbstractAuthentic
  
     private static final log = LogFactory.getLog(this)
 
-    void logAuthenticationEvent(String eventName, Authentication authentication) {
-        authentication.with {
-            try {
-                def username = principal.hasProperty('username')?.getProperty(principal) ?: principal
-                SpringSecurityEvent.withTransaction {
-                    def event = new SpringSecurityEvent(username: username,
-                                                        eventName: eventName,
-                                                        sessionId: details?.sessionId,
-                                                        remoteAddress: details?.remoteAddress)
-                    event.save(failOnError:true)
-                }
-            } catch (RuntimeException e) {
-                log.error("error saving spring security event", e)
-                throw e
+    void logAuthenticationEvent(String eventName, Authentication authentication, String remoteAddress) {
+        try {
+            def username = authentication?.principal?.hasProperty('username')?.getProperty(authentication?.principal) ?: authentication?.principal
+            SpringSecurityEvent.withTransaction {
+                def event = new SpringSecurityEvent(username: username,
+                                                    eventName: eventName,
+                                                    sessionId: authentication?.details?.sessionId,
+                                                    remoteAddress: remoteAddress)
+                event.save(failOnError:true)
             }
+        } catch (RuntimeException e) {
+            log.error("error saving spring security event", e)
+            throw e
         }
     }
 
     void onApplicationEvent(AbstractAuthenticationEvent event) {
-        logAuthenticationEvent(event.class.simpleName, event.authentication)
+        logAuthenticationEvent(event.class.simpleName, event.authentication, event.authentication?.details?.remoteAddress)
     }
 
     void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        logAuthenticationEvent('Logout', authentication)
+        logAuthenticationEvent('Logout', authentication, request.remoteHost)
     }
 }
