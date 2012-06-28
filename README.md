@@ -54,6 +54,6 @@ Changelog
 
 * Changes in spring-security-eventlog 0.2
 
-** fix exception on anonymous logout
-** changed logAuthenticationEvent signature to take remoteAddress
-   directly rather than pulling it out of authentication.details
+    * fix exception on anonymous logout
+    * changed logAuthenticationEvent signature to take remoteAddress
+      directly rather than pulling it out of authentication.details
