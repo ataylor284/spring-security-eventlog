@@ -9,5 +9,13 @@ grails.project.dependency.resolution = {
         grailsPlugins()
         grailsHome()
         grailsCentral()
+        mavenCentral()
+    }
+
+    plugins {
+        compile ":hibernate:$grailsVersion"
+        build ":tomcat:$grailsVersion"
+        compile ":spring-security-core:1.2.7.3" 
+        compile ":release:2.2.0"
     }
 }

@@ -54,7 +54,7 @@ In your `Config.groovy`, tell grails to your own event logger class:
 Changelog
 ---------
 
-* Changes in spring-security-eventlog 0.2-ressom
+* Changes in spring-security-eventlog 0.3
    * added logging of 'switched user name' when a AuthenticationSwitchUserEvent occurs
    * small cleanup of plugin definition
 

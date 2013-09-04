@@ -1,13 +1,12 @@
 package ca.redtoad.eventlog
 
-import org.springframework.security.web.authentication.switchuser.AuthenticationSwitchUserEvent
-
 import javax.servlet.http.*
 import org.apache.commons.logging.LogFactory
 import org.springframework.context.ApplicationListener
 import org.springframework.security.authentication.event.AbstractAuthenticationEvent
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.logout.LogoutHandler 
+import org.springframework.security.web.authentication.switchuser.AuthenticationSwitchUserEvent
 
 class SpringSecurityEventLogger implements ApplicationListener<AbstractAuthenticationEvent>, LogoutHandler {
  
@@ -40,10 +39,11 @@ class SpringSecurityEventLogger implements ApplicationListener<AbstractAuthentic
     }
 
     private static String switchedUsername(AbstractAuthenticationEvent event) {
-        if (event instanceof AuthenticationSwitchUserEvent){
-            return ((AuthenticationSwitchUserEvent) event).targetUser.username
+        if (event instanceof AuthenticationSwitchUserEvent) {
+            event.targetUser.username
+        } else {
+            null
         }
-        return null;
     }
 
 }

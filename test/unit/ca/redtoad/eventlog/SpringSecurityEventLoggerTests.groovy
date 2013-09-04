@@ -1,20 +1,15 @@
 package ca.redtoad.eventlog
 
-import grails.test.mixin.TestFor
-import grails.test.mixin.TestMixin
-import grails.test.mixin.domain.DomainClassUnitTestMixin
 import org.springframework.security.authentication.TestingAuthenticationToken
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.web.authentication.switchuser.AuthenticationSwitchUserEvent
 
-@TestMixin(DomainClassUnitTestMixin)
-class SpringSecurityEventLoggerTests extends GroovyTestCase {
+@Mock([SpringSecurityEvent])
+class SpringSecurityEventLoggerTests {
 
     def logger = new SpringSecurityEventLogger()
 
     void testLogAuthenticationEventWithNullAuthentication() {
-        mockDomain(SpringSecurityEvent)
-
         logger.logAuthenticationEvent("event", null, "127.0.0.1", null)
 
         assert SpringSecurityEvent.count() == 1
@@ -27,8 +22,6 @@ class SpringSecurityEventLoggerTests extends GroovyTestCase {
     }
 
     void testLogAuthenticationEventWithStringPrincipal() {
-        mockDomain(SpringSecurityEvent)
-
         def authentication = new TestingAuthenticationToken("username", [])
         logger.logAuthenticationEvent("event", authentication, "127.0.0.1", null)
 
@@ -42,8 +35,6 @@ class SpringSecurityEventLoggerTests extends GroovyTestCase {
     }
 
     void testLogAuthenticationEventWithUserDetailsPrincipal() {
-        mockDomain(SpringSecurityEvent)
-
         def principal = { -> "username" } as UserDetails
         def authentication = new TestingAuthenticationToken(principal, [])
         logger.logAuthenticationEvent("event", authentication, "127.0.0.1", null)
@@ -58,8 +49,6 @@ class SpringSecurityEventLoggerTests extends GroovyTestCase {
     }
 
     void testLogAuthenticationSwitchUserEvent() {
-        mockDomain(SpringSecurityEvent)
-
         def principal = { -> "username" } as UserDetails
         def authentication = new TestingAuthenticationToken(principal, [])
         authentication.details = [remoteAddress: '127.0.0.1', sessionId: 'mockSessionId']
