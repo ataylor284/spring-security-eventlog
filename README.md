@@ -1,6 +1,7 @@
 Spring Security Eventlog Plugin
 ===============================
 
+[![Build Status](https://travis-ci.org/ataylor284/spring-security-eventlog.png?branch=master)](https://travis-ci.org/ataylor284/spring-security-eventlog)
 
 This plugin creates a simple log of spring security events.  Each time
 a user logs in or logs out, a log entry will created, storing the
