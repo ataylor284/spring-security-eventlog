@@ -4,8 +4,8 @@ Spring Security Eventlog Plugin
 
 This plugin creates a simple log of spring security events.  Each time
 a user logs in or logs out, a log entry will created, storing the
-remote address, session id, user name, event name, and the time at
-which the event occured.
+remote address, session id, user name, event name, switched user name,
+and the time at which the event occurred.
 
 Events are logged to a table named SPRING_SECURITY_EVENT, mapped to a
 domain object ca.redtoad.eventlog.SpringSecurityEvent.
@@ -16,6 +16,7 @@ Each event has the following fields:
 * sessionId - the user's session
 * eventName - the name of the event
 * remoteAddress - the user's IP address
+* switchedUsername - username that is being switched to
 * dateCreated - the event's timestamp
 
 Some of the event names that are captured:
@@ -23,6 +24,7 @@ Some of the event names that are captured:
 * AuthenticationFailureBadCredentialsEvent - a bad username or password
 * AuthenticationSuccessEvent - a successful login
 * InteractiveAuthenticationSuccessEvent - a successful login where the user entered his/her username and password
+* AuthenticationSwitchUserEvent - user having ROLE_SWITCH_USER has assumed the identity of a (likely different) user
 * Logout - a user logged out interactively
 
 
@@ -51,6 +53,10 @@ In your `Config.groovy`, tell grails to your own event logger class:
 
 Changelog
 ---------
+
+* Changes in spring-security-eventlog 0.2-ressom
+   * added logging of 'switched user name' when a AuthenticationSwitchUserEvent occurs
+   * small cleanup of plugin definition
 
 * Changes in spring-security-eventlog 0.2
 
