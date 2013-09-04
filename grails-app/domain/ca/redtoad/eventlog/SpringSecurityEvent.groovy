@@ -6,6 +6,7 @@ class SpringSecurityEvent {
     String sessionId
     String eventName
     String remoteAddress
+    String switchedUsername
     Date dateCreated
 
     static constraints = {
@@ -13,6 +14,7 @@ class SpringSecurityEvent {
         sessionId(nullable: true)
         eventName()
         remoteAddress()
+        switchedUsername(nullable: true)
         dateCreated()
     }
 

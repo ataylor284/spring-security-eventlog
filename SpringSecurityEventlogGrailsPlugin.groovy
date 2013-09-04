@@ -26,7 +26,7 @@ class SpringSecurityEventlogGrailsPlugin {
     def scm = [ url: "http://github.com/ataylor284/spring-security-eventlog" ]
 
     def doWithSpring = {
-        def eventLoggerClass = ConfigurationHolder.config.grails.plugins.springsecurity.eventlog.eventLogger ?: SpringSecurityEventLogger
+        def eventLoggerClass = application.config.grails.plugins.springsecurity.eventlog.eventLogger ?: SpringSecurityEventLogger
         springSecurityEventLogger(eventLoggerClass)
 
         // normally these two beans are instantiated only if
@@ -35,7 +35,7 @@ class SpringSecurityEventlogGrailsPlugin {
         securityEventListener(SecurityEventListener)
         authenticationEventPublisher(DefaultAuthenticationEventPublisher)
 
-        def logoutHandlerNames = ConfigurationHolder.config.grails.plugins.springsecurity.logout.handlerNames ?: SpringSecurityUtils.LOGOUT_HANDLER_NAMES
+        def logoutHandlerNames = application.config.grails.plugins.springsecurity.logout.handlerNames ?: SpringSecurityUtils.LOGOUT_HANDLER_NAMES
         logoutHandlerNames << 'springSecurityEventLogger'
     }
 }
