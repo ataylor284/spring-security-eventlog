@@ -13,7 +13,7 @@ class SpringSecurityEvent {
         username(nullable: true)
         sessionId(nullable: true)
         eventName()
-        remoteAddress()
+        remoteAddress(nullable: true)
         switchedUsername(nullable: true)
         dateCreated()
     }
