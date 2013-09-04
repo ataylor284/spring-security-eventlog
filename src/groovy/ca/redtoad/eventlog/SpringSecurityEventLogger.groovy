@@ -1,5 +1,7 @@
 package ca.redtoad.eventlog
- 
+
+import org.springframework.security.web.authentication.switchuser.AuthenticationSwitchUserEvent
+
 import javax.servlet.http.*
 import org.apache.commons.logging.LogFactory
 import org.springframework.context.ApplicationListener
@@ -11,14 +13,16 @@ class SpringSecurityEventLogger implements ApplicationListener<AbstractAuthentic
  
     private static final log = LogFactory.getLog(this)
 
-    void logAuthenticationEvent(String eventName, Authentication authentication, String remoteAddress) {
+    void logAuthenticationEvent(String eventName, Authentication authentication, String remoteAddress, String switchedUsername) {
         try {
             def username = authentication?.principal?.hasProperty('username')?.getProperty(authentication?.principal) ?: authentication?.principal
+            def sessionId = authentication?.details?.sessionId
             SpringSecurityEvent.withTransaction {
                 def event = new SpringSecurityEvent(username: username,
                                                     eventName: eventName,
-                                                    sessionId: authentication?.details?.sessionId,
-                                                    remoteAddress: remoteAddress)
+                                                    sessionId: sessionId,
+                                                    remoteAddress: remoteAddress,
+                                                    switchedUsername: switchedUsername)
                 event.save(failOnError:true)
             }
         } catch (RuntimeException e) {
@@ -28,10 +32,18 @@ class SpringSecurityEventLogger implements ApplicationListener<AbstractAuthentic
     }
 
     void onApplicationEvent(AbstractAuthenticationEvent event) {
-        logAuthenticationEvent(event.class.simpleName, event.authentication, event.authentication?.details?.remoteAddress)
+        logAuthenticationEvent(event.class.simpleName, event.authentication, event.authentication?.details?.remoteAddress, switchedUsername(event))
     }
 
     void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        logAuthenticationEvent('Logout', authentication, request.remoteHost)
+        logAuthenticationEvent('Logout', authentication, request.remoteHost, null)
     }
+
+    private static String switchedUsername(AbstractAuthenticationEvent event) {
+        if (event instanceof AuthenticationSwitchUserEvent){
+            return ((AuthenticationSwitchUserEvent) event).targetUser.username
+        }
+        return null;
+    }
+
 }
