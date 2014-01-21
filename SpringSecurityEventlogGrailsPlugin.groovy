@@ -17,6 +17,7 @@ class SpringSecurityEventlogGrailsPlugin {
         [name: 'Andrew Taylor', email: 'ataylor@redtoad.ca']
     ]
     def scm = [url: "http://github.com/ataylor284/spring-security-eventlog"]
+    def issueManagement = [system: 'GITHUB', url: "http://github.com/ataylor284/spring-security-eventlog/issues" ]
 
     def doWithSpring = {
         def eventLoggerClass = application.config.grails.plugin.springsecurity.eventlog.eventLogger ?: SpringSecurityEventLogger
