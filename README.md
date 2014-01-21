@@ -49,7 +49,7 @@ add your custom behavior to logAuthenticationEvent.  For example:
 
 In your `Config.groovy`, tell grails to your own event logger class:
 
-    grails.plugins.springsecurity.eventlog.eventLogger = mypackage.CustomEventLogger
+    grails.plugin.springsecurity.eventlog.eventLogger = mypackage.CustomEventLogger
 
 
 Changelog

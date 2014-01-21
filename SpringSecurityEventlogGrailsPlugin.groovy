@@ -1,14 +1,14 @@
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
-import org.codehaus.groovy.grails.plugins.springsecurity.SecurityEventListener
-import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+import grails.plugin.springsecurity.SecurityEventListener
+
 import org.springframework.security.authentication.DefaultAuthenticationEventPublisher
+
 import ca.redtoad.eventlog.SpringSecurityEventLogger
 
 class SpringSecurityEventlogGrailsPlugin {
 
     def version = "0.3"
-    def grailsVersion = "1.3 > *"
-    def dependsOn = [springSecurityCore: '1.0 > *']
+    def grailsVersion = "2.0 > *"
+    def loadAfter = ['springSecurityCore']
     def pluginExcludes = [
             "grails-app/views/error.gsp"
     ]
@@ -26,7 +26,7 @@ class SpringSecurityEventlogGrailsPlugin {
     def scm = [ url: "http://github.com/ataylor284/spring-security-eventlog" ]
 
     def doWithSpring = {
-        def eventLoggerClass = application.config.grails.plugins.springsecurity.eventlog.eventLogger ?: SpringSecurityEventLogger
+        def eventLoggerClass = application.config.grails.plugin.springsecurity.eventlog.eventLogger ?: SpringSecurityEventLogger
         springSecurityEventLogger(eventLoggerClass)
 
         // normally these two beans are instantiated only if
@@ -34,8 +34,9 @@ class SpringSecurityEventlogGrailsPlugin {
         // we override the config
         securityEventListener(SecurityEventListener)
         authenticationEventPublisher(DefaultAuthenticationEventPublisher)
+    }
 
-        def logoutHandlerNames = application.config.grails.plugins.springsecurity.logout.handlerNames ?: SpringSecurityUtils.LOGOUT_HANDLER_NAMES
-        logoutHandlerNames << 'springSecurityEventLogger'
+    def doWithApplicationContext = { ctx ->
+        ctx.logoutHandlers << ctx.springSecurityEventLogger
     }
 }

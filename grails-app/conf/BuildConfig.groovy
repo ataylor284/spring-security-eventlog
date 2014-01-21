@@ -10,13 +10,14 @@ grails.project.dependency.resolution = {
         grailsHome()
         grailsCentral()
         mavenCentral()
+        mavenRepo 'http://repo.spring.io/milestone/'
     }
 
     plugins {
         compile ":hibernate:$grailsVersion", {
             export = false
         }
-        compile ":spring-security-core:1.2.7.3" 
+        compile ':spring-security-core:2.0-RC2'
         build ':release:2.2.1', ':rest-client-builder:1.0.3', {
             export = false
         }
