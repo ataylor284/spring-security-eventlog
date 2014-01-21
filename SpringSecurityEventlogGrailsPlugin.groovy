@@ -9,21 +9,14 @@ class SpringSecurityEventlogGrailsPlugin {
     def version = "0.3"
     def grailsVersion = "2.0 > *"
     def loadAfter = ['springSecurityCore']
-    def pluginExcludes = [
-            "grails-app/views/error.gsp"
-    ]
-
-    def author = "Andrew Taylor"
-    def authorEmail = "ataylor@redtoad.ca"
     def title = "Spring Security Event Log"
-    def description = '''\\
-        |A plugin to log spring security events.
-    '''.stripMargin()
-
+    def description = 'A plugin to log Spring Security events'
     def documentation = "https://github.com/ataylor284/spring-security-eventlog"
-
     def license = "APACHE"
-    def scm = [ url: "http://github.com/ataylor284/spring-security-eventlog" ]
+    def developers = [
+        [name: 'Andrew Taylor', email: 'ataylor@redtoad.ca']
+    ]
+    def scm = [url: "http://github.com/ataylor284/spring-security-eventlog"]
 
     def doWithSpring = {
         def eventLoggerClass = application.config.grails.plugin.springsecurity.eventlog.eventLogger ?: SpringSecurityEventLogger
