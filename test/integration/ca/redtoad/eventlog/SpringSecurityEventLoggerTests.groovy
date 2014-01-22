@@ -4,7 +4,6 @@ import org.springframework.security.authentication.TestingAuthenticationToken
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.web.authentication.switchuser.AuthenticationSwitchUserEvent
 
-@Mock([SpringSecurityEvent])
 class SpringSecurityEventLoggerTests {
 
     def logger = new SpringSecurityEventLogger()
@@ -64,5 +63,4 @@ class SpringSecurityEventLoggerTests {
         assert event.switchedUsername == "switchedUsername"
         assert event.remoteAddress == "127.0.0.1"
     }
-
 }
