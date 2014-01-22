@@ -13,7 +13,7 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        compile ":hibernate:$grailsVersion", {
+        compile ":hibernate:3.6.10.7", {
             export = false
         }
         compile ':spring-security-core:2.0-RC2'

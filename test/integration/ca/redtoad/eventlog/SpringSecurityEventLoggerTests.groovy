@@ -1,5 +1,6 @@
 package ca.redtoad.eventlog
 
+import org.junit.Test
 import org.springframework.security.authentication.TestingAuthenticationToken
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.web.authentication.switchuser.AuthenticationSwitchUserEvent
@@ -8,6 +9,7 @@ class SpringSecurityEventLoggerTests {
 
     def logger = new SpringSecurityEventLogger()
 
+    @Test
     void testLogAuthenticationEventWithNullAuthentication() {
         logger.logAuthenticationEvent("event", null, "127.0.0.1", null)
 
@@ -20,6 +22,7 @@ class SpringSecurityEventLoggerTests {
         assert event.remoteAddress == "127.0.0.1"
     }
 
+    @Test
     void testLogAuthenticationEventWithStringPrincipal() {
         def authentication = new TestingAuthenticationToken("username", [])
         logger.logAuthenticationEvent("event", authentication, "127.0.0.1", null)
@@ -33,6 +36,7 @@ class SpringSecurityEventLoggerTests {
         assert event.remoteAddress == "127.0.0.1"
     }
 
+    @Test
     void testLogAuthenticationEventWithUserDetailsPrincipal() {
         def principal = { -> "username" } as UserDetails
         def authentication = new TestingAuthenticationToken(principal, [])
@@ -47,6 +51,7 @@ class SpringSecurityEventLoggerTests {
         assert event.remoteAddress == "127.0.0.1"
     }
 
+    @Test
     void testLogAuthenticationSwitchUserEvent() {
         def principal = { -> "username" } as UserDetails
         def authentication = new TestingAuthenticationToken(principal, [])
