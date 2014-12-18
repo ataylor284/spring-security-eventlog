@@ -42,7 +42,7 @@ add your custom behavior to logAuthenticationEvent.  For example:
     import org.springframework.security.core.Authentication
     
     class CustomEventLogger extends SpringSecurityEventLogger {
-        void logAuthenticationEvent(String eventName, Authentication authentication, String remoteAddress) {
+        void logAuthenticationEvent(String eventName, Authentication authentication, String remoteAddress, String switchedUsername) {
             println "$eventName! $authentication from $remoteAddress"
         }
     }
