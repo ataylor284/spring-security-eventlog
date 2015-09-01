@@ -6,8 +6,9 @@ import ca.redtoad.eventlog.SpringSecurityEventLogger
 
 class SpringSecurityEventlogGrailsPlugin {
 
-    def version = "0.4"
+    def version = "0.5"
     def grailsVersion = "2.0 > *"
+    def loadBefore = ['springSecurityRest']
     def loadAfter = ['springSecurityCore']
     def title = "Spring Security Event Log"
     def description = 'A plugin to log Spring Security events'
